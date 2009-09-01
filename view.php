@@ -1,8 +1,19 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="zh-cn">
+<title>预览幻灯片</title>
+<style type="text/css">
+.wrapper{
+display: block;
+width: 500px;
+margin-left: auto;
+margin-right: auto;
+}
+</style>
 <body>
-
+<div class="wrapper">
 <?php
 include_once("kit/SSUtil.php");
 if(isset($_GET["SLIDEID"]))

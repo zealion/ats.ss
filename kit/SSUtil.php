@@ -23,6 +23,7 @@ class SSUtil {
 			}     
 			if ((strtolower($key) != "slideshow") &&  (strtolower($key) != "slideshows") && (strtolower($key) != "slideshowdeleted") && (strtolower($key) != "slideshowuploaded") && (strtolower($key) != "tags")  && (strtolower($key) != "group") && (strtolower($key) != "name") && (strtolower($key) != "count") && (strtolower($key) != "user")) {
                 for($i = 0;$i < count($val);$i++) {
+                    if( isset($values[$val[$i]]["value"])) 
                       $finarr[$i][$key]=$values[$val[$i]]["value"];
                 }
 			}
