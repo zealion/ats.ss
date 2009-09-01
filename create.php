@@ -1,19 +1,32 @@
 <html>
-<head></head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
 <body>
 <?php
+include_once 'kit/SSUtil.php';
 
 if (array_key_exists('_submit_check', $_POST))
 {
-    echo $_POST["srcfile"];
+    $apiobj=new SSUtil();
 
     error_reporting(E_ALL);
 
     $request = 'http://www.slideshare.net/api/2/upload_slideshow';
     $username = 'zealion';
-    $password = 'a8765431';
+    $password = '8765431';
     $slideshow_title = 'title';
-    $slideshow_srcfile = "@" . $_POST["srcfile"];
+    //$slideshow_srcfile = "@" . $_POST["srcfile"];
+    
+    $result = $apiobj->upload_slide(
+        $username,$password,$slideshow_title,$_POST["srcfile"],
+        "description","tags",true,false,false,false,false
+        );
+
+    echo sprintf('<a href="view.php?SLIDEID=%d">预览</a><br/>', $result["SLIDESHOWID"]);
+    
+    //$slideshow_srcfile = "@/Users/lingfei/Code/zealion/ssats/test.ppt";
+    /*
     $api_key = 'nEGnb3DQ';
     $ss = 'jBjhAB5G';
     $ts = time();
@@ -24,8 +37,8 @@ if (array_key_exists('_submit_check', $_POST))
         (
             'username' => $username,
             'password' => $password,
-            'slideshow_title' => $slidshow_title,
-            'slideshow_srcfile' => $slidesow_srcfile,
+            'slideshow_title' => $slideshow_title,
+            'slideshow_srcfile' => $slideshow_srcfile,
             'api_key' => $api_key,
             'ts' => $ts,
             'hash' => $hash,
@@ -44,13 +57,15 @@ if (array_key_exists('_submit_check', $_POST))
         $xml = null;
     }
 
-    echo htmlspecialchars($xml, ENT_QUOTES);
+    echo $response . "<br>";
+    print htmlspecialchars($xml, ENT_QUOTES);
+     */
 }
 ?>
 
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-<input name="srcfile" type="file" >
-<input type="submit" value="Upload">
+<input name="srcfile" type="file" />
+<input type="submit" value="Upload" />
 <input type="hidden" name="_submit_check" value="1"/>
 </form>
 
