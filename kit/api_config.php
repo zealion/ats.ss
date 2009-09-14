@@ -5,8 +5,8 @@ $key='nEGnb3DQ';
 $secret='jBjhAB5G';
 
 // Do not change this
-$apiurl='http://www.slideshare.net/api/1/';
-$api_posturl='/api/1/';
+$apiurl='http://www.slideshare.net/api/2/';
+$api_posturl='/api/2/';
 $api_postserver='www.slideshare.net';
 
 ?>

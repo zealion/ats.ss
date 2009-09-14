@@ -58,9 +58,11 @@ border: 1px solid #33aa33;
 background-color: #88cc88;
 text-decoration: none;
 }
-
 #create_box #result a:hover{
 background-color: #aaddaa;
+}
+#create_box .error{
+color: red;
 }
 </style>
 <script type="text/javascript">
@@ -126,14 +128,32 @@ if (array_key_exists('_submit_check', $_POST))
     $password = '8765431';
     $slideshow_title = $_POST["slideshow_title"];
     //$slideshow_srcfile = "@" . $_POST["srcfile"];
+    $file_name = $_FILES["srcfile"]["tmp_name"];
+    $temp_file_name = 'uploads/' . time() . ".ppt";
+    //upload file
     
+    if(move_uploaded_file($file_name, $temp_file_name))
+    {
+        //echo "upload ok<br/>";
+    }
+    else
+    {
+        //echo "upload failed<br>";
+        $is_uploaded = false;
+    }
+
+    //upload to slideshare
     $result = $apiobj->upload_slide(
-        $username,$password,$slideshow_title,$_POST["srcfile"],
-        "zealion","autotimes",true,false,false,false,false
+        $username,$password,$slideshow_title,$temp_file_name,
+        "zealion","autotimes",false,false,false,true,false
         );
 
-    $slideid =  $result["SLIDESHOWID"];
-    //$slideshow_srcfile = "@/Users/lingfei/Code/zealion/ssats/test.ppt";
+    if( isset( $result["SLIDESHOWID"] ))
+    {
+        $slideid =  $result["SLIDESHOWID"];
+        unlink($temp_file_name);
+    }
+        //$slideshow_srcfile = "@/Users/lingfei/Code/zealion/ssats/test.ppt";
     /*
     $api_key = 'nEGnb3DQ';
     $ss = 'jBjhAB5G';
@@ -173,8 +193,8 @@ if (array_key_exists('_submit_check', $_POST))
 <div class="wrapper">
 <div id="create_box">
     <div class="title">上传您的幻灯片</div>
-<div class="note">选择ppt文件，点击上传，成功后点击预览连接获得签入代码。</div>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="upload" onsubmit="return validate_form(this)">
+<div class="note">选择ppt文件，点击上传，成功后点击预览连接获得嵌入代码。</div>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" method="post" class="upload" onsubmit="return validate_form(this)">
 <table class="form">
 <tr><td>标题：</td><td><input name="slideshow_title" /></td></tr>
 <tr><td>文件：</td><td><input name="srcfile" type="file" /></td></tr>
@@ -182,10 +202,12 @@ if (array_key_exists('_submit_check', $_POST))
 <input type="hidden" name="_submit_check" value="1"/>
 </table>
 </form>
+<div class="error">
+<?php if(!empty($error_msg)) echo $error_msg; ?>
+</div>
 <div id="result">
 <?php if(isset($slideid)) echo sprintf('<a href="view.php?SLIDEID=%d">预览</a><br/>', $slideid); ?>
 </div>
-
 </div>
 </div>
 </body>
